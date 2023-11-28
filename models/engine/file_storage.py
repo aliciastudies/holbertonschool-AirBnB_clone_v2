@@ -67,5 +67,5 @@ class FileStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
 
             # Check if the key exists in the __objects dictionary and delete it
-        if key in self.__objects:
+        if key in FileStorage.__objects:
             del FileStorage.__objects[key]
