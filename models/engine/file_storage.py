@@ -62,6 +62,8 @@ class FileStorage:
         Args:
         obj (object): The object to be deleted.
         """
+        if obj is None:
+            return
         if obj:
             # Create a key combining the object's class name and its id
             key = "{}.{}".format(type(obj).__name__, obj.id)
