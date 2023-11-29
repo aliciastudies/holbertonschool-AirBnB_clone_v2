@@ -119,18 +119,23 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
         new_instance = HBNBCommand.classes[args[0]]()
+
         for param in args[1:]:
             if "=" not in param:
                 continue
+
             key, value = param.split('=', 1)
+
             if value.startswith('"') and value.endswith('"'):
                 stripped_value = value.strip('"').replace('\\"', '"')\
                     .replace('_', ' ')
                 setattr(new_instance, key, stripped_value)
+
             else:
                 try:
                     if '.' in value:
@@ -221,16 +226,18 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            class_name = args.split(' ')[0]  # remove possible trailing args
+            if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        # retrieves objects of specified class
+            objects = storage.all(HBNBCommand.classes[class_name])
+        # if no args, retrieve all objects
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            objects = storage.all()
+
+        for key, value in objects.items():
+            print_list.append(str(value))
 
         print(print_list)
 
