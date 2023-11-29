@@ -24,7 +24,7 @@ class BaseModel:
             else:
                 for key, value in kwargs.items():
                     if key != '__class__':
-                        setattr(self, k, v)
+                        setattr(self, key, value)
                 #convert string rep to objects
                 self.created_at = datetime.strptime(self.created_at,
                                                     '%Y-%m-%dT%H:%M:%S.%f')
