@@ -8,5 +8,11 @@ import os
 
 class Amenity(BaseModel, Base):
     __tablename__ = 'amenities'
-    name = Column(String(128), nullable=False)
-    # place_amenities = represent a relationship Many-To-Many with Place
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        # place_amenities = represent a relationship Many-To-Many with Place
+        place_amenities = relationship("Place", secondary="place_amenity",
+                                       backref="amenities")
+        # Primary link with place then second is place_amenity as specified
+    else:
+        name = ""
