@@ -35,17 +35,15 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True, default=null())
 
         # Relationship with User
-        # user = relationship("User",
-        # backref=backref("places", cascade="all, delete-orphan"))
+        user = relationship("User", back_populates="places")
         # Relationship with City
-        # cities = relationship("City",
-        # backref=backref("places", cascade="all, delete-orphan"))
+        cities = relationship("City", back_populates="places")
 
         # Relationship with Review
-        reviews = relationship("Review", backref="place",
-                                cascade="all, delete-orphan")
-        amenities = relationship("Amenity", secondary="place_amenity",
-                                    viewonly=False)
+        reviews = relationship("Review", back_populates="place",
+                                cascade="delete, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False, overlaps="place_amenities")
 
     else:
         city_id = ""

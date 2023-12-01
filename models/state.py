@@ -28,5 +28,5 @@ class State(BaseModel, Base):
             return city_list
     else:
         name = Column(String(128), nullable=False)
-        cities = relationship("City", cascade="delete, delete-orphan",
-                              backref="state")
+        cities = relationship("City", back_populates="state",
+                              cascade="delete, delete-orphan")
