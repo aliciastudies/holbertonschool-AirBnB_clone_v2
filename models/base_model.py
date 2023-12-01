@@ -5,9 +5,11 @@ from datetime import datetime
 
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
-Base = declarative_base()
-
+Base = object
+if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    Base = declarative_base()
 
 class BaseModel:
     """Adding attributes in class"""
@@ -27,10 +29,12 @@ class BaseModel:
                 if key != '__class__':
                     setattr(self, key, value)
             # convert string rep to objects
-            self.created_at = datetime.strptime(self.created_at,
-                                                '%Y-%m-%dT%H:%M:%S.%f')
-            self.updated_at = datetime.strptime(self.updated_at,
-                                                '%Y-%m-%dT%H:%M:%S.%f')
+            if 'created_at' in kwargs and kwargs['created_at'] is not None:
+                self.created_at = datetime.strptime(self.created_at,
+                                                    '%Y-%m-%dT%H:%M:%S.%f')
+            if 'updated_at' in kwargs and kwargs['updated_at'] is not None:
+                self.updated_at = datetime.strptime(self.updated_at,
+                                                    '%Y-%m-%dT%H:%M:%S.%f')
         # if no id, generate new UUID
         if not getattr(self, 'id', None):
             self.id = str(uuid.uuid4())
