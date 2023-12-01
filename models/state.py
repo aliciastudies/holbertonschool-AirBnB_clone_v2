@@ -10,7 +10,6 @@ from models.city import City
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
@@ -28,5 +27,6 @@ class State(BaseModel, Base):
                     city_list.append(city)
             return city_list
     else:
+        name = Column(String(128), nullable=False)
         cities = relationship("City", cascade="delete, delete-orphan",
                               backref="state")
