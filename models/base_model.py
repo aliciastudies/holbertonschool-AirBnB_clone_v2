@@ -11,6 +11,7 @@ Base = object
 if os.getenv("HBNB_TYPE_STORAGE") == "db":
     Base = declarative_base()
 
+
 class BaseModel:
     """Adding attributes in class"""
     id = Column(String(60), primary_key=True, nullable=False)

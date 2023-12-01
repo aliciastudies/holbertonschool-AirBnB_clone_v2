@@ -18,9 +18,9 @@ class Place(BaseModel, Base):
             "place_amenity",
             Base.metadata,
             Column('place_id', String(60), ForeignKey("places.id"),
-            primary_key=True, nullable=False),
+                   primary_key=True, nullable=False),
             Column('amenity_id', String(60), ForeignKey("amenities.id"),
-            primary_key=True, nullable=False),
+                   primary_key=True, nullable=False),
             extend_existing=True
             )
 
@@ -42,7 +42,7 @@ class Place(BaseModel, Base):
 
         # Relationship with Review
         reviews = relationship("Review", back_populates="place",
-                                cascade="delete, delete-orphan")
+                               cascade="delete, delete-orphan")
         amenities = relationship("Amenity", secondary=place_amenity,
                                  viewonly=False, overlaps="place_amenities")
 
@@ -86,11 +86,11 @@ class Place(BaseModel, Base):
                 if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list
-        
+
         @amenities.setter
         def amenities(self, value):
             """
             handles append for adding Amenity.id to attribute amenity_ids
             """
-            if type(value) == Amenity:
+            if type(value) is Amenity:
                 self.amenity_ids.append(value.id)

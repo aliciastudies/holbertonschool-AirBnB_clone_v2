@@ -93,7 +93,7 @@ class DBStorage:
     def close(self):
         """
         Because SQLAlchemy doesn't reload this `Session`
-        when it's time to insert new data, 
+        when it's time to insert new data,
         so we force it to reload
         """
         self.__session.close()
