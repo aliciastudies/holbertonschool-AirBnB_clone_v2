@@ -20,7 +20,8 @@ class Place(BaseModel, Base):
             Column('place_id', String(60), ForeignKey("places.id"),
             primary_key=True, nullable=False),
             Column('amenity_id', String(60), ForeignKey("amenities.id"),
-            primary_key=True, nullable=False)
+            primary_key=True, nullable=False),
+            extend_existing=True
             )
 
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)

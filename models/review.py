@@ -16,11 +16,8 @@ class Review(BaseModel, Base):
         # Relationships
         # backref automatically adds a 'reviews'
         # attribute to User and Place models
-        # user = relationship("User", backref=backref("reviews",
-        # cascade="all, delete-orphan"))
-        # place = relationship("Place",
-        # backref=backref("reviews", cascade="all,
-        # delete-orphan"))
+        user = relationship("User", back_populates="reviews")
+        place = relationship("Place", back_populates="reviews")
         # user = relationship("User", back_populates="reviews")
         # place = relationship("Place", back_populates="reviews")
     else:
