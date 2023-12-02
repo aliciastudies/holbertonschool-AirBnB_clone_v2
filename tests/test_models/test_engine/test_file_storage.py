@@ -2,9 +2,11 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.engine.db_storage import DBStorage 
 from models import storage
 import os
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 'not using db')
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
@@ -31,6 +33,8 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        temp = None
+        obj = None # initialise before loop
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is obj)
@@ -65,8 +69,12 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         storage.save()
         storage.reload()
+        loaded = None
+        obj = None
         for obj in storage.all().values():
             loaded = obj
+        # check if loop ran and loaded is not None
+        self.assertIsNotNone(loaded, "No objects loaded")
         self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_reload_empty(self):
@@ -98,9 +106,10 @@ class test_fileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
-        for key in storage.all().keys():
-            temp = key
-        self.assertEqual(temp, 'BaseModel' + '.' + _id)
+        storage_keys = storage.all().keys()
+        for key in storage_keys:
+            self.assertTrue(key.startswith('BaseModel.'))
+            self.assertEqual(key, f'BaseModel.{_id}')
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
