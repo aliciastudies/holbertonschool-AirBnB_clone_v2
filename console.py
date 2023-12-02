@@ -115,15 +115,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split(' ')
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in HBNBCommand.classes:
+        
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[args[0]]()
+        new_instance = HBNBCommand.classes[class_name]()
 
         for param in args[1:]:
             if "=" not in param:
@@ -226,6 +227,7 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
         if args == "" or args is None:
             print("** class name missing **")
+            return
 
         if args:
             class_name = args.split(' ')[0]  # remove possible trailing args
