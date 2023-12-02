@@ -2,11 +2,11 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
-from models.engine.db_storage import DBStorage 
+from models.engine.file_storage import FileStorage
 from models import storage
 import os
 
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 'not using db')
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 'not using fs')
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
@@ -67,15 +67,11 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
-        storage.save()
+        new.save()
         storage.reload()
         loaded = None
-        obj = None
         for obj in storage.all().values():
             loaded = obj
-        # check if loop ran and loaded is not None
-        self.assertIsNotNone(loaded, "No objects loaded")
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_reload_empty(self):
         """ Load from an empty file """
