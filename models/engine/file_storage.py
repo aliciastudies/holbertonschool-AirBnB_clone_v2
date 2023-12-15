@@ -71,3 +71,9 @@ class FileStorage:
             # Check if the key exists in the __objects dictionary and delete it
         if key in FileStorage.__objects:
             del FileStorage.__objects[key]
+
+    def close(self):
+        """
+        deserialises JSON file to objects
+        """
+        self.reload()

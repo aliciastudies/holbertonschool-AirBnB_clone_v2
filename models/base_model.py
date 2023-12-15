@@ -37,7 +37,7 @@ class BaseModel:
                 self.updated_at = datetime.strptime(self.updated_at,
                                                     '%Y-%m-%dT%H:%M:%S.%f')
         # if no id, generate new UUID
-        if not getattr(self, 'id', None):
+        if not getattr(self, 'id', None) is None:
             self.id = str(uuid.uuid4())
 
     def __str__(self):
@@ -58,10 +58,10 @@ class BaseModel:
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        if '_sa_instance_state' in dictionary.keys():
-            del dictionary['_sa_instance_state']
+        for key, value in dictionary.items():
+            if isinstance(value, datetime):
+                dictionary[key] = value.isoformat()
+        dictionary.pop('_sa_instance_state', None)
         return dictionary
 
     def delete(self):
